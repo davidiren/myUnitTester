@@ -25,6 +25,7 @@ public class Body {
     private JCheckBox disableCheckBox;
 
     private JTextField textField;
+    private JTextArea textArea;
 
 
     //Should only be called on EDT
@@ -63,10 +64,10 @@ public class Body {
 
     private JPanel buildMiddlePanel() {
         JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        JTextField text = new JTextField();
+        middlePanel.setLayout(new BorderLayout()/*(FlowLayout.CENTER)*/);
+        textArea = new JTextArea();
 
-        middlePanel.add(text);
+        middlePanel.add(textArea);
 
         return middlePanel;
     }
@@ -76,7 +77,7 @@ public class Body {
         //upperPanel.setBorder(BorderFactory.createTitledBorder("Exempel"));
         upperPanel.setLayout(new BorderLayout());
 
-        textField = new JTextField("Enter Testclass");
+        textField = new JTextField("Test1");
         upperPanel.add(textField, BorderLayout.CENTER);
 
         runTest = new JButton("Run Tests");
@@ -87,7 +88,7 @@ public class Body {
     }
 
     private void setupListeners(){
-        runTest.addActionListener(new ButtonListener(textField));
+        runTest.addActionListener(new ButtonListener(textField, textArea));
     }
 
 }

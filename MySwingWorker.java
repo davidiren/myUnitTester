@@ -3,22 +3,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MySwingWorker extends SwingWorker {
+public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
 
-    private String testname;
-    private JTextField textField;
+    private String testName;
+    private JTextArea textArea;
 
-    public MySwingWorker(String s, JTextField tf){
-        this.testname = s;
-        this.textField = tf;
+    public MySwingWorker(String s, JTextArea ta){
+        this.testName = s;
+        this.textArea = ta;
 
     }
 
     @Override
     protected ArrayList<String> doInBackground(){
         ArrayList<String> s;
-        FindTests ft = new FindTests();
-        s = new ArrayList<>(ft.findTests(testname));
+        FindTests fa = new FindTests();
+        s = new ArrayList<>(fa.findTests(testName));
 
         return s;
     }
@@ -35,7 +35,7 @@ public class MySwingWorker extends SwingWorker {
         try {
             ArrayList<String> results = get();
             for (String s:results) {
-
+                textArea.append(s+"\n");
             }
 
         } catch (InterruptedException | ExecutionException e) {
