@@ -1,0 +1,5 @@
+testFailingByException Failed due to: java.lang.NullPointerException
+testDecrement Success!
+testFailing FAIL
+testIncrement Success!
+testInitialisation Success!
