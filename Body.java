@@ -1,7 +1,5 @@
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
@@ -15,19 +13,25 @@ import javax.swing.JTextField;
 
 //Exempel på ett enkelt gränssnitt.
 
-
+/**
+ * GUI class
+ */
 public class Body {
 
     private JFrame frame;
 
     private JButton runTest;
-
-    private JCheckBox disableCheckBox;
+    private JButton clear;
 
     private JTextField textField;
     private JTextArea textArea;
+    private JScrollPane scroll;
 
 
+    /**
+     * Constructor
+     * @param title - Title on the program window
+     */
     //Should only be called on EDT
     public Body(String title) {
         frame = new JFrame(title);
@@ -38,40 +42,58 @@ public class Body {
         JPanel middlePanel = buildMiddlePanel();
         JPanel lowerPanel = buildLowerPanel();
 
-        // SetupListeners
-        setupListeners();
-
         //Add panels to the frame
         frame.add(upperPanel, BorderLayout.NORTH);
         frame.add(middlePanel, BorderLayout.CENTER);
         frame.add(lowerPanel, BorderLayout.SOUTH);
 
+        frame.setPreferredSize(new Dimension(700,600));
         frame.pack();
+
 
     }
 
+    /**
+     * Makes the GUI visible
+     */
     //Should only be called on EDT
     public void show() {
         frame.setVisible(true);
     }
 
+    /**
+     * Creates the lower panel of the GUI
+     * @return - the created lower panel
+     */
     private JPanel buildLowerPanel() {
         JPanel lowerPanel = new JPanel();
         lowerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        clear = new JButton("Clear");
+        lowerPanel.add(clear, BorderLayout.CENTER);
 
         return lowerPanel;
     }
 
+    /**
+     * Creates the middle panel of the GUI
+     * @return - the created middle panel
+     */
     private JPanel buildMiddlePanel() {
         JPanel middlePanel = new JPanel();
         middlePanel.setLayout(new BorderLayout()/*(FlowLayout.CENTER)*/);
         textArea = new JTextArea();
+        scroll = new JScrollPane(textArea);
 
-        middlePanel.add(textArea);
+        middlePanel.add(scroll);
+
 
         return middlePanel;
     }
 
+    /**
+     * Creates the upper panel of the GUI
+     * @return - the created upper panel
+     */
     private JPanel buildUpperPanel() {
         JPanel upperPanel = new JPanel();
         //upperPanel.setBorder(BorderFactory.createTitledBorder("Exempel"));
@@ -87,8 +109,23 @@ public class Body {
         return upperPanel;
     }
 
-    private void setupListeners(){
-        runTest.addActionListener(new ButtonListener(textField, textArea));
+    /**
+     * GETTERS
+     */
+    public JTextField getTextField() {
+        return textField;
+    }
+
+    public JTextArea getTextArea() {
+        return textArea;
+    }
+
+    public JButton getRunTest() {
+        return runTest;
+    }
+
+    public JButton getClear() {
+        return clear;
     }
 
 }
