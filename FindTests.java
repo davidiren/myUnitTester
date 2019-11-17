@@ -8,7 +8,6 @@ import java.util.ArrayList;
  */
 public class FindTests {
     private Method setup;
-
     private Method teardown;
     private ArrayList<Method> tests = new ArrayList<>();
     private ArrayList<String> results = new ArrayList<>();

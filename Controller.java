@@ -18,7 +18,7 @@ public class Controller {
      */
     public void setupGUI(){
         gui.getRunTest().addActionListener(new ButtonListener(
-                gui.getTextField(), gui.getTextArea()));
+                gui.getTextField(), gui.getTextArea(), gui.getRunTest()));
         gui.getClear().addActionListener(new Clear(gui.getTextArea()));
 
         gui.show();

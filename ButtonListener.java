@@ -10,15 +10,18 @@ class ButtonListener implements ActionListener {
 
     private final JTextField textField;
     private final JTextArea textArea;
+    private final JButton button;
 
     /**
      * Constructor
      * @param tf - JTextField
      * @param ta - JTextArea
+     * @param b  - JButton
      */
-    public ButtonListener(JTextField tf, JTextArea ta) {
+    public ButtonListener(JTextField tf, JTextArea ta, JButton b) {
         this.textField = tf;
         this.textArea = ta;
+        this.button = b;
     }
 
     /**
@@ -26,7 +29,7 @@ class ButtonListener implements ActionListener {
      * @param e - Action event
      */
     public void actionPerformed(ActionEvent e) {
-
-        new MySwingWorker(textField.getText(), textArea).execute();
+        button.setEnabled(false);
+        new MySwingWorker(textField.getText(), textArea, button).execute();
     }
 }

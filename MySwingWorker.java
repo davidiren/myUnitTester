@@ -10,16 +10,18 @@ public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
 
     private String testName;
     private JTextArea textArea;
+    private JButton button;
 
     /**
      * Constructor
      * @param s - Text from a JTextField
      * @param ta - JTextArea to update
+     * @param b  - JButton
      */
-    public MySwingWorker(String s, JTextArea ta){
+    public MySwingWorker(String s, JTextArea ta, JButton b){
         this.testName = s;
         this.textArea = ta;
-
+        this.button = b;
     }
 
     /**
@@ -67,5 +69,6 @@ public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
             System.out.println("Double check spelling (Testclasses always" +
                     " start with an uppercase letter)");
         }
+        button.setEnabled(true);
     }
 }
