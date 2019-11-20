@@ -1,21 +1,39 @@
+/**
+ * Author:      David Irén
+ * CS-user:     id17din
+ * Mail:        id17din@cs.umu.se
+ *
+ * Date:        18-11-2019
+ */
+
+import org.junit.Test;
+import se.umu.cs.unittest.TestClass;
+
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 /**
  * Has all logic and runs the tests, will find tests using reflection
- * and will then run those tests
+ * and will then run those tests, generating results along the way.
+ * If something does not work it will instead save what went wrong
  */
-public class FindTests {
+public class GenerateResults {
     private Method setup;
     private Method teardown;
     private ArrayList<Method> tests = new ArrayList<>();
     private ArrayList<String> results = new ArrayList<>();
+    private int success=0, fail=0, exceptionFail =0;
+    private TestClass tc;
 
     /**
      * Constructor
      */
-    public FindTests() {
+    public GenerateResults() {
 
     }
 
@@ -23,24 +41,34 @@ public class FindTests {
      * Will find test methods and setup/teardown methods.
      * @param s - String with a name of a class
      * @return - A list with all text generated
-     * @throws NoClassDefFoundError - If a class is misspelled e.g. lowercase
+     * @throws NoClassDefFoundError - If a class is misspelled
      */
-    public ArrayList<String> findTests(String s)throws NoClassDefFoundError{
+    public ArrayList<String> findTests(String s)
+            throws NoClassDefFoundError{
 
         try{
-            Class<?> x = Class.forName( s );
+            File dir = new File(".");
+            URLClassLoader classLoader = URLClassLoader.newInstance
+                    (new URL[] { dir.toURI().toURL() });
+            Class<?> x = Class.forName(s, true, classLoader);
             if(x.isInterface()){
                 results.add("Class is an interface");
                 return results;
             }
-            Object y = x.newInstance();
+            //Check if class implements TestClass
+            if(!(Class.forName("se.umu.cs.unittest.TestClass")
+                    .isAssignableFrom(x))){
+                results.add("Class does not implement TestClass!");
+                return results;
+            }
 
+            Object o = x.newInstance();
+
+            // Find all test methods and setup/teardown
             Method[] ma = x.getMethods();
             for (Method met:ma) {
-                //System.out.println(met.getName());
 
                 if(met.getName().contains("test")){
-                    //System.out.println(met.getName());
                     getTests().add(met);
                 }else if(met.getName().contains("setUp")){
                     setSetup(met);
@@ -49,19 +77,19 @@ public class FindTests {
                 }
 
             }
-            /*No test methods found*/
+            /*If no test methods were found*/
             if(getTests().size() < 1){
                 results.add("Not a testclass!");
                 return results;
             }
-            runTests(y);
+            runTests(o);
 
         }catch(ClassNotFoundException e){
-            System.out.println("There is no such class!");
             results.add("There is no such class!");
         } catch (IllegalAccessException | InstantiationException e) {
-            //e.printStackTrace();
-            results.add("Failed doe to: "+e.getCause().toString());
+            results.add("Failed due to: "+e.getCause().toString());
+        } catch (MalformedURLException e) {
+            results.add("Failed due to: "+e.getCause().toString());
         }
 
 
@@ -69,12 +97,12 @@ public class FindTests {
     }
 
     /**
-     * Runs all tests found in the class, will run setup/teardown before test
-     * if those methods exist in the class
+     * Runs all tests found in the class, will run setup/teardown
+     * before test if those methods exist in the class
      * @param o - Reflected class to invoke methods from
      */
     private void runTests(Object o) {
-        int i=0, j=0, h=0;
+
         for (Method m:getTests()) {
             try {
                 if (!getSetup().equals(null)) {
@@ -82,24 +110,22 @@ public class FindTests {
                 }
                 if(m.invoke(o).equals(true)){
                     results.add(m.getName()+" Success!");
-                    i++; //no. tests cleared
+                    success++; //no. tests cleared
                 }else{
                     results.add(m.getName()+" FAIL");
-                    j++; //no. tests failed
+                    fail++; //no. tests failed
                 }
                 if (!getTeardown().equals(null)) {
                     getTeardown().invoke(o);
                 }
             }catch (InvocationTargetException | IllegalAccessException e){
-                //System.out.println(m.getName()+" Failed due to an exception");
                 results.add(m.getName()+" Failed due to an exception");
-                h++; //no. tests failed due to exeptions
+                exceptionFail++; //no. tests failed due to exeptions
             }
         }
-        results.add("\n");
-        results.add(i +" Tests Succeded");
-        results.add(j +" Tests Failed");
-        results.add(h +" Tests failed due to an exception");
+        results.add("\n"+success +" Tests Succeded");
+        results.add(fail +" Tests Failed");
+        results.add(exceptionFail +" Tests failed due to an exception");
     }
 
     /**
@@ -123,6 +149,22 @@ public class FindTests {
 
     public ArrayList<Method> getTests() {
         return tests;
+    }
+
+    public ArrayList<String> getResults() {
+        return results;
+    }
+
+    public int getSuccess() {
+        return success;
+    }
+
+    public int getFail() {
+        return fail;
+    }
+
+    public int getExceptionFail() {
+        return exceptionFail;
     }
 
     public void setTests(ArrayList<Method> tests) {

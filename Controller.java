@@ -1,4 +1,11 @@
 /**
+ * Author:      David Irén
+ * CS-user:     id17din
+ * Mail:        id17din@cs.umu.se
+ *
+ * Date:        18-11-2019
+ */
+/**
  * Creates action listeners for the buttons
  */
 public class Controller {

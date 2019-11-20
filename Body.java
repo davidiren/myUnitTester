@@ -1,3 +1,10 @@
+/**
+ * Author:      David Irén
+ * CS-user:     id17din
+ * Mail:        id17din@cs.umu.se
+ *
+ * Date:        18-11-2019
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -80,8 +87,9 @@ public class Body {
      */
     private JPanel buildMiddlePanel() {
         JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BorderLayout()/*(FlowLayout.CENTER)*/);
+        middlePanel.setLayout(new BorderLayout());
         textArea = new JTextArea();
+        textArea.setEditable(false);
         scroll = new JScrollPane(textArea);
 
         middlePanel.add(scroll);
@@ -96,7 +104,6 @@ public class Body {
      */
     private JPanel buildUpperPanel() {
         JPanel upperPanel = new JPanel();
-        //upperPanel.setBorder(BorderFactory.createTitledBorder("Exempel"));
         upperPanel.setLayout(new BorderLayout());
 
         textField = new JTextField("Test1");

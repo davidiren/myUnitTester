@@ -1,10 +1,17 @@
+/**
+ * Author:      David Irén
+ * CS-user:     id17din
+ * Mail:        id17din@cs.umu.se
+ *
+ * Date:        18-11-2019
+ */
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Executes and processes the logic of the program, then updates textarea in gui
+ * Executes and processes the logic of the program,
+ * then updates textarea in the gui
  */
 public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
 
@@ -26,13 +33,13 @@ public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
 
     /**
      * Processes the logic
-     * @return - List with text that should be added to the JTextField
+     * @return -List with text that should be added to the JTextField
      */
     @Override
     protected ArrayList<String> doInBackground() {
         try {
             ArrayList<String> s;
-            FindTests fa = new FindTests();
+            GenerateResults fa = new GenerateResults();
             s = new ArrayList<>(fa.findTests(testName));
 
             //Thread.sleep(5000);
@@ -49,7 +56,8 @@ public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
     }
 
     /**
-     * Updates the JTextArea with text from the list doInBackground returns
+     * Updates the JTextArea with text from the list
+     * doInBackground returns
      */
     @Override
     protected void done(){
@@ -65,9 +73,6 @@ public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
 
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-        } catch (NoClassDefFoundError e){
-            System.out.println("Double check spelling (Testclasses always" +
-                    " start with an uppercase letter)");
         }
         button.setEnabled(true);
     }
