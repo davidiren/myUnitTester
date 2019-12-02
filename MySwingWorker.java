@@ -72,7 +72,7 @@ public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
             }
 
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            // Do nothing
         }
         button.setEnabled(true);
     }

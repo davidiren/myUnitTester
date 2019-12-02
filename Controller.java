@@ -10,23 +10,25 @@
  */
 public class Controller {
 
-    Body gui;
+    private Body gui;
+    private Clear clearButtonListner;
+    private ButtonListener runButton;
 
     /**
      * Constructor
      */
     public Controller(){
         gui = new Body("My Unit Tester");
-
+        clearButtonListner = new Clear(gui.getTextArea());
+        runButton = new ButtonListener(gui.getTextField(), gui.getTextArea(), gui.getRunTest());
     }
 
     /**
      * Initializes the GUI and shows it
      */
     public void setupGUI(){
-        gui.getRunTest().addActionListener(new ButtonListener(
-                gui.getTextField(), gui.getTextArea(), gui.getRunTest()));
-        gui.getClear().addActionListener(new Clear(gui.getTextArea()));
+        gui.getRunTest().addActionListener(runButton);
+        gui.getClear().addActionListener(clearButtonListner);
 
         gui.show();
     }

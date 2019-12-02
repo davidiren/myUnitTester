@@ -62,7 +62,7 @@ public class GenerateResults {
                 return results;
             }
 
-            Object o = x.newInstance();
+            Object o = x.getDeclaredConstructor().newInstance();
 
             // Find all test methods and setup/teardown
             Method[] ma = x.getMethods();
@@ -90,6 +90,10 @@ public class GenerateResults {
             results.add("Failed due to: "+e.getCause().toString());
         } catch (MalformedURLException e) {
             results.add("Failed due to: "+e.getCause().toString());
+        } catch (NoSuchMethodException e) {
+            results.add("Class does not have a constructor!");
+        } catch (InvocationTargetException e) {
+            // Do nothing
         }
 
 
@@ -105,6 +109,9 @@ public class GenerateResults {
 
         for (Method m:getTests()) {
             try {
+                if(!m.getReturnType().toString().equals("boolean")){
+                    continue; //test does not return a boolean, don't run test
+                }
                 if (!getSetup().equals(null)) {
                     getSetup().invoke(o);
                 }
