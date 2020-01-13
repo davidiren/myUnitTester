@@ -72,7 +72,7 @@ public class MySwingWorker extends SwingWorker<ArrayList<String>, Integer> {
             }
 
         } catch (InterruptedException | ExecutionException e) {
-            // Do nothing
+            // Do nothing, Gui update failed?
         }
         button.setEnabled(true);
     }

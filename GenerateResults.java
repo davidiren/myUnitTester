@@ -6,7 +6,6 @@
  * Date:        18-11-2019
  */
 
-import org.junit.Test;
 import se.umu.cs.unittest.TestClass;
 
 import java.io.File;
@@ -93,7 +92,8 @@ public class GenerateResults {
         } catch (NoSuchMethodException e) {
             results.add("Class does not have a constructor!");
         } catch (InvocationTargetException e) {
-            // Do nothing
+            results.add("Test method failed due to: "+e.getCause().toString());
+
         }
 
 
@@ -109,7 +109,7 @@ public class GenerateResults {
 
         for (Method m:getTests()) {
             try {
-                if(!m.getReturnType().toString().equals("boolean")){
+                if(m.getReturnType() != boolean.class){
                     continue; //test does not return a boolean, don't run test
                 }
                 if (!getSetup().equals(null)) {
